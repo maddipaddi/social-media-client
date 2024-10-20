@@ -8,6 +8,7 @@
     "build": "sass src/scss:dist/css",
     "start": "sass --watch src/scss:dist/css, & live-server",
     "lint": "eslint .",
+    "lint-fix": "eslint src/**/*.js --cache --fix",
     "format": "prettier --write .",
     "prepare": "husky install"
   },
