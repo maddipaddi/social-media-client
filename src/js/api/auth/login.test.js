@@ -6,9 +6,8 @@ const accessToken = "testtoken";
 const email = "maddipaddi@noroff.no";
 const password = "padde123";
 
-jest.mock("../../storage/index.js", () => ({
+jest.mock("../../storage/save.js", () => ({
   save: jest.fn(),
-  load: jest.fn(() => null),
 }));
 
 global.fetch = jest.fn(() =>
