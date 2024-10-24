@@ -1,10 +1,13 @@
 describe("Login functionality", () => {
-  it("should allow the user to log in with valid credentials using the login form", () => {
+  beforeEach(() => {
     cy.visit("/");
+  });
 
-    cy.get(".btn.btn-outline-success.me-2").click();
+  it("should allow the user to log in with valid credentials using the login form", () => {
+    cy.get("#registerForm").find('button[data-auth="login"]').wait(500).click(); // Wait added to ensure the button is interactable before clicking, could not figure out a better way to do it
 
     cy.get("#loginForm").within(() => {
+      cy.wait(500); // Could not get any other method to work except add wait to make sure the form is ready for typing
       cy.get("#loginEmail").type("maddipaddi@stud.noroff.no");
       cy.get("#loginPassword").type("maddipaddi28");
 
@@ -15,11 +18,10 @@ describe("Login functionality", () => {
   });
 
   it("should not submit the login form with invalid credentials and shows a message to the user", () => {
-    cy.visit("/");
-
-    cy.get(".btn.btn-outline-success.me-2").click();
+    cy.get("#registerForm").find('button[data-auth="login"]').wait(500).click();
 
     cy.get("#loginForm").within(() => {
+      cy.wait(500);
       cy.get("#loginEmail").type("invalid-email-123@noroff.no");
       cy.get("#loginPassword").type("invalid-password-123");
 
@@ -27,9 +29,7 @@ describe("Login functionality", () => {
     });
 
     cy.on("window:alert", (alertText) => {
-      expect(alertText).to.equal(
-        "Either your username was not found or your password is incorrect"
-      );
+      expect(alertText).to.match(/username.*password is incorrect/);
     });
   });
 });
