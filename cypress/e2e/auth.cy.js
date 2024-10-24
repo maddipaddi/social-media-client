@@ -13,6 +13,8 @@ describe("Auth functionality", () => {
       cy.get('button[type="submit"]').click();
     });
 
+    cy.window().its("localStorage.token").should("exist");
+
     cy.url().should("include", "/?view=profile&name=");
   });
 
@@ -24,6 +26,8 @@ describe("Auth functionality", () => {
 
       cy.get('button[type="submit"]').click();
     });
+
+    cy.window().its("localStorage.token").should("not.exist");
 
     cy.on("window:alert", (alertText) => {
       expect(alertText).to.match(/username.*password is incorrect/);
@@ -39,7 +43,11 @@ describe("Auth functionality", () => {
       cy.get('button[type="submit"]').click();
     });
 
+    cy.window().its("localStorage.token").should("exist");
+
     cy.get('button[data-auth="logout"]').click();
+
+    cy.window().its("localStorage.token").should("not.exist");
 
     cy.get('button[data-auth="login"]').should("be.visible");
   });
